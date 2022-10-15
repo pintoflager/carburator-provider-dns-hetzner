@@ -1,0 +1,6 @@
+[[secret]]
+name = "hetzner_dns_apikey"
+
+[[secret.line]]
+key = "apikey"
+value = "prompt!(Hetzner DNS API key for managing domain names.)"
