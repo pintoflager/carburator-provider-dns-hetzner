@@ -1,3 +1,6 @@
+[target]
+status = "production"
+
 [[secret]]
 name = "hetzner_dns_apikey"
 
