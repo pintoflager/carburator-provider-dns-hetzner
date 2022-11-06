@@ -1,4 +1,4 @@
-target = "production"
+targets = ["worker", "commander", "watchdog"]
 
 [[secret]]
 name = "hetzner_dns_apikey" # primary secret key
