@@ -1,4 +1,6 @@
-targets = ["worker", "commander", "watchdog"]
+targets = ["worker", "commander"]
+
+provisioners = ["api"]
 
 [[secret]]
 name = "hetzner_dns_apikey" # primary secret key
