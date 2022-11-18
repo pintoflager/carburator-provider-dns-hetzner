@@ -1,4 +1,4 @@
-targets = ["worker", "commander"]
+targets = ["commander"]
 
 provisioners = ["api"]
 
