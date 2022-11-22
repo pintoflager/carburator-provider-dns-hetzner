@@ -8,4 +8,4 @@ name = "hetzner_dns_apikey" # primary secret key
 [[secret.line]]
 key = "hetzner_dns_apikey"
 value = "prompt!(secret)" # Idea is to use prompt mods here; secret, password, text...
-prompt = "Hetzner DNS API key for managing public nameserver service."
+prompt = "Hetzner DNS API key"

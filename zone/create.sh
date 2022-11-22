@@ -6,7 +6,7 @@
 # ATTENTION: to check the environment variables uncomment:
 # env
 
-carburator fn paint green "Invoking Hetzner DNS provider..."
+carburator fn echo info "Invoking Hetzner DNS provider..."
 
 # Check if provisioner exists and gives OK response.
 carburator provisioner request \
