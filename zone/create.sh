@@ -1,18 +1,14 @@
 #!/usr/bin/env bash
 
-# ATTENTION: Scripts run from carburator project's public root directory:
-# echo "$PWD"
-
-# ATTENTION: to check the environment variables uncomment:
-# env
-
 carburator fn echo info "Invoking Hetzner DNS provider..."
 
+# ATTENTION: --preserve_env (or -k) flag forwards domain env from here to provisioner.
 # Check if provisioner exists and gives OK response.
 carburator provisioner request \
     create \
     zone \
     --provider "$PROVIDER_NAME" \
-    --provisioner "$PROVISIONER_NAME" || exit 120
+    --provisioner "$PROVISIONER_NAME" \
+    --preserve_env || exit 120
 
 carburator fn echo success "Hetzner DNS zone for $DOMAIN_FQDN created."
