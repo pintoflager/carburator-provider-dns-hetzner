@@ -10,5 +10,3 @@ carburator provisioner request \
     --provider "$PROVIDER_NAME" \
     --provisioner "$PROVISIONER_NAME" \
     --preserve-env || exit 120
-
-carburator print terminal success "Hetzner DNS zone for $DOMAIN_FQDN created."
