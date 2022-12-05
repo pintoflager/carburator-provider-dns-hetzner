@@ -1,5 +1,6 @@
 name = "hetzner"
 version = "0.1.0"
+collection = "dns"
 targets = ["commander"]
 
 provisioners = ["api"]
