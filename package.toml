@@ -3,6 +3,9 @@ version = "0.1.0"
 collection = "DnsProvider"
 targets = ["Commander"]
 
+# List of provisioner names this provider supports
+provisioners = ["api"]
+
 [[secret]]
 name = "hetzner_dns_apikey" # primary secret key
 
