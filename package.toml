@@ -1,9 +1,7 @@
 name = "hetzner"
 version = "0.1.0"
-collection = "dns"
-targets = ["commander"]
-
-provisioners = ["api"]
+collection = "DnsProvider"
+targets = ["Commander"]
 
 [[secret]]
 name = "hetzner_dns_apikey" # primary secret key
