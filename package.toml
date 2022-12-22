@@ -1,15 +1,8 @@
 name = "hetzner"
 version = "0.1.0"
 collection = "DnsProvider"
-targets = ["Commander"]
+project_roles = ["Commander"]
 
 # List of provisioner names this provider supports
 provisioners = ["api"]
-
-[[secret]]
-name = "hetzner_dns_apikey" # primary secret key
-
-[[secret.line]]
-key = "hetzner_dns_apikey"
-value = "prompt!(secret)" # Idea is to use prompt mods here; secret, password, text...
-prompt = "Hetzner DNS API key"
+secret_name = "hetzner_dns_apikey"
