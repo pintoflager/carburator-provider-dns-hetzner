@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# ATTENTION: Runs only on commander, pointless to read platform from $1
+
 secret_name="$PACKAGE_SECRET_NAME"
 
 # Prompt secret if it doesn't exist yet.
