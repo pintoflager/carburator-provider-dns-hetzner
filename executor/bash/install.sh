@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# ATTENTION: Runs only on commander, pointless to read platform from $1
+# ATTENTION: Same tasks for client and commander node, pointless to read role from $1
 
 secret_name="$PACKAGE_SECRET_NAME"
 
