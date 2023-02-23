@@ -8,6 +8,6 @@ carburator-rule provisioner request \
     dns-provider \
     create \
     zone \
-    --provider "$PROVIDER_NAME" \
+    --provider "$DNS_PROVIDER_NAME" \
     --provisioner "$PROVISIONER_NAME" \
     --preserve-env || exit 120
