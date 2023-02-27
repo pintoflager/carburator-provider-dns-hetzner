@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# ATTENTION: Same tasks for client and commander node, pointless to read role from $1
+# ATTENTION: Supports only client nodes, pointless to read role from $1
 
 secret_name="$PACKAGE_SECRET_NAME"
 

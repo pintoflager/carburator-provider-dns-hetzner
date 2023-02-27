@@ -1,7 +1,7 @@
 name = "hetzner"
 version = "0.1.0"
 collection = "DnsProvider"
-platforms = ["Client", "Commander"]
+platforms = ["Client"]
 
 # List of provisioner names this provider supports
 provisioners = ["api"]
