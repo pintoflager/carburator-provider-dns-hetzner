@@ -13,3 +13,35 @@ if ! carburator has secret "$secret_name" --user root; then
       --name "$secret_name" \
       --user root || exit 120
 fi
+
+# Curl is required.
+if ! carburator has program curl; then
+    carburator print terminal error \
+        "Missing required program curl. Trying to install..."
+else
+    exit
+fi
+
+# TODO: Untested below
+if carburator has program apt; then
+    carburator sudo apt update
+    carburator sudo apt -y install curl
+
+elif carburator has program pacman; then
+    carburator sudo pacman update
+    carburator sudo pacman -Suy curl
+
+elif carburator has program yum; then
+    carburator sudo yum makecache --refresh
+    carburator sudo yum install curl
+
+elif carburator has program dnf; then
+    carburator sudo dnf makecache --refresh
+    carburator sudo dnf -y install curl
+
+else
+    carburator print terminal error \
+        "Unable to detect package manager from client node linux"
+    exit 120
+fi
+
