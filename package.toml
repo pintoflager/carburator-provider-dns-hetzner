@@ -4,7 +4,5 @@ collection = "DnsProvider"
 platforms = ["Client"]
 
 # List of provisioner names this provider supports
-# TODO: provider that calls api doesn't need provisioner that's called api...
-# TODO: run api calls from provider itself.
-# provisioners = ["api"]
+# provisioners = []
 secret_name = "hetzner_dns_apikey"
