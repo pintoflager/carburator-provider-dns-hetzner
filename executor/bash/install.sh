@@ -19,7 +19,8 @@ if ! carburator has program curl; then
     carburator print terminal error \
         "Missing required program curl. Trying to install..."
 else
-    exit
+    carburator print terminal success "Curl found from the client"
+    exit 0
 fi
 
 # TODO: Untested below

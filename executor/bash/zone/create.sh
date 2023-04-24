@@ -90,7 +90,7 @@ if [[ -z $zones || $(wc -l <<< "$zones") -eq 0 ]]; then
     if create_zone "$token" "$DOMAIN_FQDN" "$output"; then
         carburator print terminal success \
             "Hetzner DNS zone for $DOMAIN_FQDN created."
-        exit
+        exit 0
     else
         exit 110
     fi
@@ -114,14 +114,14 @@ if [[ $(wc -l <<< "$zones") -eq 1 ]]; then
             rm -f "$existing_zones"
             carburator print terminal success \
                 "Hetzner DNS zone for $DOMAIN_FQDN created."
-            exit
+            exit 0
         else
             exit 110
         fi
     else
         get_zone "$token" "$id" "$output"
         rm -f "$existing_zones"
-        exit
+        exit 0
     fi
 fi
 
