@@ -5,4 +5,4 @@ platforms = ["Client"]
 
 # List of provisioner names this provider supports
 # provisioners = []
-secret_name = "hetzner_dns_apikey"
+secret_names = ["hetzner_dns_apikey"]

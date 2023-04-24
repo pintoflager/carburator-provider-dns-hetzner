@@ -2,16 +2,24 @@
 
 # ATTENTION: Supports only client nodes, pointless to read role from $1
 
-secret_name="$PACKAGE_SECRET_NAME"
 
-# Prompt secret if it doesn't exist yet.
-if ! carburator has secret "$secret_name" --user root; then
-    carburator print terminal warn \
-		"Could not find secret containing Hetzner DNS API token."
-	
-    carburator prompt secret "Hetzner DNS API key" \
-      --name "$secret_name" \
-      --user root || exit 120
+# We know we have secrets but this is a good practice anyways.
+if carburator has json dns_provider.secrets -p '.exec.json'; then
+
+    # Read secrets from json exec environment line by line
+    while read -r secret; do
+        # Prompt secret if it doesn't exist yet.
+        if ! carburator has secret "$secret" --user root; then
+            # ATTENTION: We know only one secret is present. Otherwise
+            # prompt texts should be adjusted accordingly.
+            carburator print terminal warn \
+                "Could not find secret containing Hetzner DNS API token."
+            
+            carburator prompt secret "Hetzner DNS API key" \
+            --name "$secret" \
+            --user root || exit 120
+        fi
+    done < <(carburator get json dns_provider.secrets array -p '.exec.json')
 fi
 
 # Curl is required.
