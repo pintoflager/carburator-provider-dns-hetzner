@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
 
-carburator print terminal info "Invoking Hetzner's DNS API provisioner..."
+carburator print terminal info "Invoking Hetzner's DNS API provider..."
 
 resource="zone"
 output="$DNS_PROVIDER_PATH/${DOMAIN_FQDN}_${resource}.json"
 existing_zones="$DNS_PROVIDER_PATH/${DOMAIN_PROVIDER_NAME}_zones.json"
 
-# In case of api provisioner this dir most likely is not present during the
-# first install
+# This dir most likely is not present during the first install
 mkdir -p "$DNS_PROVIDER_PATH"
 
 
 ###
 # Get API token from secrets or bail early.
 #
-token=$(carburator get secret "$DNS_PROVIDER_SECRET_0" --user root); exitcode=$?
+token=$(carburator get secret "$DNS_PROVIDER_SECRETS_0" --user root); exitcode=$?
 
 if [[ -z $token || $exitcode -gt 0 ]]; then
 	carburator print terminal error \
