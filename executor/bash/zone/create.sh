@@ -3,7 +3,8 @@
 carburator print terminal info "Invoking Hetzner's DNS API provider..."
 
 resource="zone"
-output="$DNS_PROVIDER_PATH/${DOMAIN_FQDN}_${resource}.json"
+zone="${DOMAIN_FQDN}_${resource}"
+zone_out="$DNS_PROVIDER_PATH/$zone.json"
 existing_zones="$DNS_PROVIDER_PATH/${DOMAIN_PROVIDER_NAME}_zones.json"
 
 # This dir most likely is not present during the first install
@@ -13,7 +14,8 @@ mkdir -p "$DNS_PROVIDER_PATH"
 ###
 # Get API token from secrets or bail early.
 #
-token=$(carburator get secret "$DNS_PROVIDER_SECRETS_0" --user root); exitcode=$?
+token=$(carburator get secret "$DNS_PROVIDER_SECRETS_0" --user root)
+exitcode=$?
 
 if [[ -z $token || $exitcode -gt 0 ]]; then
 	carburator print terminal error \
@@ -29,7 +31,7 @@ create_zone() {
         -d $'{"name": "'"$2"'","ttl": 86400}' > "$3"
 
     # Assuming create failed as we cant load a zone id.
-	if ! carburator has json zone.id --path "$3"; then
+	if ! carburator has json zone.id -p "$3"; then
         carburator print terminal error "Create zone '$2' failed."
 		rm -f "$3"; return 1
 	fi
@@ -62,12 +64,12 @@ get_zone() {
 # If output file is missing or does not contain zone ID we can only assume
 # this is new project or we have failure of previous intent on our hands.
 #
-if [[ -e $output ]]; then
-    zone_id=$(carburator get json zone.id string --path "$output")
+if [[ -e $zone_out ]]; then
+    zone_id=$(carburator get json zone.id string -p "$zone_out")
 
     # Same zone ID on localhost and remote -- nothing to do.
-    if [[ -n $zone_id ]] && get_zone "$token" "$zone_id" "$output"; then
-        verify_id=$(carburator get json zone.id string --path "$output")
+    if [[ -n $zone_id ]] && get_zone "$token" "$zone_id" "$zone_out"; then
+        verify_id=$(carburator get json zone.id string -p "$zone_out")
 
         # Zone ID's before and after query match.
         if [[ $zone_id == "$verify_id" ]]; then exit; fi
@@ -81,12 +83,12 @@ carburator print terminal attention \
 find_zones "$token" "$DOMAIN_FQDN" "$existing_zones"
 
 # No exitsting zones matching our fully qualified domain name (FQDN)
-zones=$(carburator get json zones array --path "$existing_zones") || exit 120
+zones=$(carburator get json zones array -p "$existing_zones") || exit 120
 
 if [[ -z $zones || $(wc -l <<< "$zones") -eq 0 ]]; then
     rm -f "$existing_zones"
     
-    if create_zone "$token" "$DOMAIN_FQDN" "$output"; then
+    if create_zone "$token" "$DOMAIN_FQDN" "$zone_out"; then
         carburator print terminal success \
             "Hetzner DNS zone for $DOMAIN_FQDN created."
         exit 0
@@ -105,11 +107,11 @@ if [[ $(wc -l <<< "$zones") -eq 1 ]]; then
         --yes-val "Destroy old zone and create new one" \
         --no-val "Keep the found zone with it's records"; exitcode=$?
 
-    id=$(carburator get json zones.0.id string --path "$existing_zones") || exit 120
+    id=$(carburator get json zones.0.id string -p "$existing_zones") || exit 120
 
     if [[ $exitcode -eq 0 ]]; then
         destroy_zone "$token" "$id"
-        if create_zone "$token" "$DOMAIN_FQDN" "$output"; then
+        if create_zone "$token" "$DOMAIN_FQDN" "$zone_out"; then
             rm -f "$existing_zones"
             carburator print terminal success \
                 "Hetzner DNS zone for $DOMAIN_FQDN created."
@@ -118,7 +120,7 @@ if [[ $(wc -l <<< "$zones") -eq 1 ]]; then
             exit 110
         fi
     else
-        get_zone "$token" "$id" "$output"
+        get_zone "$token" "$id" "$zone_out"
         rm -f "$existing_zones"
         exit 0
     fi
