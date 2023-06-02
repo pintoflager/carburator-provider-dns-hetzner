@@ -33,20 +33,20 @@ fi
 
 # TODO: Untested below
 if carburator has program apt; then
-    carburator sudo apt update
-    carburator sudo apt -y install curl
+    apt-get -y update
+    apt-get -y install curl
 
 elif carburator has program pacman; then
-    carburator sudo pacman update
-    carburator sudo pacman -Suy curl
+    pacman update
+    pacman -Suy curl
 
 elif carburator has program yum; then
-    carburator sudo yum makecache --refresh
-    carburator sudo yum install curl
+    yum makecache --refresh
+    yum install curl
 
 elif carburator has program dnf; then
-    carburator sudo dnf makecache --refresh
-    carburator sudo dnf -y install curl
+    dnf makecache --refresh
+    dnf -y install curl
 
 else
     carburator print terminal error \
