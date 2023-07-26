@@ -1,14 +1,23 @@
 #!/usr/bin/env bash
 
-# ATTENTION: Supports only client nodes, pointless to read role from $1
+###
+# Register on server node.
+#
 if [[ $1 == "server" ]]; then
-    carburator print terminal error \
-        "DNS providers register only on client nodes. Package configuration error."
-    exit 120
+    carburator print terminal info \
+        "Hetzner DNS provider executes register only on client nodes"
+    exit 0
 fi
 
+
+###
+# Register on client node.
+#
+# User holding the secret, provider package user or root.
+user="${USER_PUBLIC_IDENTIFIER:-root}"
+
 # We know we have secrets but this is a good practice anyways.
-if carburator has json dns_provider.secrets -p '.exec.json'; then
+if carburator has json dns_provider.secrets -p .exec.json; then
 
     # Read secrets from json exec environment line by line
     while read -r secret; do
@@ -20,10 +29,10 @@ if carburator has json dns_provider.secrets -p '.exec.json'; then
                 "Could not find secret containing Hetzner DNS API token."
             
             carburator prompt secret "Hetzner DNS API key" \
-            --name "$secret" \
-            --user root || exit 120
+                --name "$secret" \
+                --user "$user" || exit 120
         fi
-    done < <(carburator get json dns_provider.secrets array -p '.exec.json')
+    done < <(carburator get json dns_provider.secrets array -p .exec.json)
 fi
 
 # Curl is required.

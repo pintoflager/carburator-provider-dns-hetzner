@@ -2,19 +2,33 @@
 
 carburator print terminal info "Invoking Hetzner's DNS API provider..."
 
+###
+# Executes on server node.
+#
+if [[ $1 == "server" ]]; then
+    carburator print terminal info \
+        "DNS zone create can only be invoked from client nodes."
+    exit 0
+fi
+
+###
+# Executes on client node.
+#
 resource="zone"
 zone="${DOMAIN_FQDN}_${resource}"
 zone_out="$DNS_PROVIDER_PATH/$zone.json"
-existing_zones="$DNS_PROVIDER_PATH/${DOMAIN_PROVIDER_NAME}_zones.json"
+existing_zones="$DNS_PROVIDER_PATH/${DOMAIN_LOCKED_PROVIDER_NAME}_zones.json"
 
 # This dir most likely is not present during the first install
 mkdir -p "$DNS_PROVIDER_PATH"
 
+# User holding the secret, provider package user or root.
+user="${USER_PUBLIC_IDENTIFIER:-root}"
 
 ###
 # Get API token from secrets or bail early.
 #
-token=$(carburator get secret "$DNS_PROVIDER_SECRETS_0" --user root)
+token=$(carburator get secret "$DNS_PROVIDER_SECRETS_0" --user "$user")
 exitcode=$?
 
 if [[ -z $token || $exitcode -gt 0 ]]; then
