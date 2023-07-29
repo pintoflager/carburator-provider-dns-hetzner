@@ -23,7 +23,7 @@ existing_zones="$DNS_PROVIDER_PATH/${DOMAIN_LOCKED_PROVIDER_NAME}_zones.json"
 mkdir -p "$DNS_PROVIDER_PATH"
 
 # User holding the secret, provider package user or root.
-user="${USER_PUBLIC_IDENTIFIER:-root}"
+user="${PROVIDER_USER_PUBLIC_IDENTIFIER:-root}"
 
 ###
 # Get API token from secrets or bail early.
